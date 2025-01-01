@@ -5,7 +5,7 @@ import logging
 app = Flask(__name__)
 
 # Groq client setup
-client = Groq(api_key='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')
+client = Groq(api_key='#####################')
 
 # Set up basic logging for debugging
 logging.basicConfig(level=logging.DEBUG)
