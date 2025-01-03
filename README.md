@@ -54,7 +54,7 @@ Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application desig
 
 3. Set up the frontend:
 
-    - Serve the `index.html` file using a web server (e.g., Nginx, Apache).
+    - Serve the `index.html` file.
 
 4. Set environment variables:
 
@@ -78,9 +78,9 @@ Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application desig
 
 ## Usage
 
-1. Open the application in a supported browser.
+1. Open the application in audio supported browser.
 2. Click **Start Recording** to begin speech recognition.
-3. Speak into the microphone during a sales call.
+3. Speak into the microphone just like a sales call.
 4. View real-time insights (sentiment, emotion, engagement, etc.) on the dashboard.
 5. Click **Stop Recording** to end the session.
 6. Save the transcription and analysis results to an Excel file.
@@ -112,31 +112,6 @@ Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application desig
       "suggestions": "Suggestions based on the input"
     }
     ```
-
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch:
-
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-
-3. Commit your changes:
-
-    ```bash
-    git commit -m "Add your feature"
-    ```
-
-4. Push to the branch:
-
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-
-5. Open a pull request.
 
 ## License
 
