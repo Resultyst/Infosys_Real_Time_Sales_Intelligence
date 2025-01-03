@@ -26,7 +26,6 @@ The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversa
 - [Usage](#usage)
 - [Features](#features)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgments](#acknowledgments)
@@ -36,7 +35,6 @@ The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversa
 ### Prerequisites
 
 - Python 3.x
-- Node.js (for frontend dependencies, if applicable)
 - Groq API Key (Sign up at [Groq](https://www.groq.com))
 
 ### Steps
