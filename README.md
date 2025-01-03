@@ -2,7 +2,9 @@
 
 ![Project Banner](assets/banner.png)
 
-Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application designed to assist sales teams during live sales calls by providing real-time insights and suggestions. The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversations, detect sentiment, and provide actionable recommendations to improve sales outcomes.
+Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application designed to assist sales teams during live sales calls by providing real-time insights and suggestions. 
+
+The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversations, detect sentiment, and provide actionable recommendations to improve sales outcomes.
 
 ## Features
 
