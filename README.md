@@ -12,7 +12,7 @@ Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application desig
 - **Purchase Intent Analysis**: Classifies the buyer's purchase intent (Immediate, Exploratory, etc.).
 - **Behavioral Intent Analysis**: Identifies behavioral intent signals (Website browsing, Cart abandonment, etc.).
 - **Advanced Intent Detection**: Detects advanced intent markers (High-value lead identification, etc.).
-- **Integration with CRM and Google Sheets**: Stores and analyzes data for future reference (# Currently working on this part)
+- **Integration with CRM and Google Sheets**: Stores and analyzes data for future reference (#Currently working on this part)
 
 ## Demo
 
