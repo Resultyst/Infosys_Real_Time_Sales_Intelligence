@@ -54,11 +54,11 @@ The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversa
 
 3. Set up the frontend:
 
-    - Serve the `index.html` file.
+     Serve the `index.html` file.
 
 4. Set environment variables:
 
-    - Create a `.env` file in the root directory and add your Groq API key:
+     Create a `.env` file in the root directory and add your Groq API key:
 
       ```env
       GROQ_API_KEY=your_groq_api_key_here
