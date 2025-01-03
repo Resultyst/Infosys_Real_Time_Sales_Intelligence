@@ -6,10 +6,10 @@ Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application desig
 
 ## Features
 
-- **Real-Time Sentiment Analysis**: Detects the sentiment of the conversation (Positive, Negative, Neutral, etc.).
-- **Emotion Detection**: Identifies the emotional state of the buyer (Excitement, Frustration, etc.).
-- **Buyer Engagement Analysis**: Assesses the level of buyer engagement (Low, Moderate, High).
-- **Purchase Intent Analysis**: Classifies the buyer's purchase intent (Immediate, Exploratory, etc.).
+- **Real-Time Sentiment Analysis**: Detects the sentiment of the conversation (Very Positive, Positive, Neutral, Negative, Very Negative)
+- **Emotion Detection**: Identifies the emotional state of the buyer (Excitement, Frustration, etc.)
+- **Buyer Engagement Analysis**: Assesses the level of buyer engagement (Low, Moderate, High)
+- **Purchase Intent Analysis**: Classifies the buyer's purchase intent (Immediate, Exploratory, etc.)
 - **Behavioral Intent Analysis**: Identifies behavioral intent signals (Website browsing, Cart abandonment, etc.).
 - **Advanced Intent Detection**: Detects advanced intent markers (High-value lead identification, etc.).
 - **Integration with CRM and Google Sheets**: Stores and analyzes data for future reference (**Currently working on this part**)
