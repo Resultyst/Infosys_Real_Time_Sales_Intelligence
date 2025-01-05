@@ -14,6 +14,12 @@ from services.suggestion_service import SuggestionService
 # Initialize Flask app
 app = Flask(__name__)
 
+<<<<<<< HEAD
+=======
+# Groq client setup
+client = Groq(GROQ_API_KEY)
+
+>>>>>>> 97c0146dde10453629a2602e926dc87412104e6d
 # Set up basic logging for debugging
 logging.basicConfig(level=logging.DEBUG)
 
