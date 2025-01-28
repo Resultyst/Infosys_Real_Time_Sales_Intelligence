@@ -43,8 +43,8 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/real-time-sales-intelligence-tool.git
-    cd real-time-sales-intelligence-tool
+    git clone https://github.com/Resultyst/Infosys_Real_Time_Sales_Intelligence.git
+    cd Infosys_Real_Time_Sales_Intelligence
     ```
 
 2. Set up the backend:
