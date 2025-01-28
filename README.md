@@ -2,9 +2,9 @@
 
 ![Project Banner](assets/banner.png)
 
-Real-Time AI-Powered Sales Intelligence Tool is a cutting-edge application designed to assist sales teams during live sales calls by providing real-time insights and suggestions. 
+Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant aims to transform the sales process by developing an AI-powered assistant that provides real-time sentiment analysis, intent detection, personalized recommendations, and negotiation coaching. 
 
-The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversations, detect sentiment, and provide actionable recommendations to improve sales outcomes.
+It reduces manual effort, improves customer engagement, and optimizes the sales workflow. 
 
 ## Features
 
@@ -14,8 +14,8 @@ The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversa
 - **Purchase Intent Analysis**: Classifies the buyer's purchase intent (Immediate, Exploratory, etc.)
 - **Behavioral Intent Analysis**: Identifies behavioral intent signals (Website browsing, Cart abandonment, etc.).
 - **Advanced Intent Detection**: Detects advanced intent markers (High-value lead identification, etc.).
-- **Integration with CRM and Google Sheets**: Stores and analyzes data for future reference (**Currently working on this part**)
-
+- **Integration with CRM and Google Sheets**: Stores and analyzes data for future reference
+- 
 ## Demo
 
 <!-- Add a GIF or video demo of your project in action -->
@@ -36,6 +36,7 @@ The tool leverages advanced AI models (e.g., Mixtral, LLaMA) to analyze conversa
 
 - Python 3.x
 - Groq API Key (Sign up at [Groq](https://www.groq.com))
+- Google Sheets & Drive API (Enable at[Google Cloud Console](https://console.cloud.google.com))
 
 ### Steps
 
