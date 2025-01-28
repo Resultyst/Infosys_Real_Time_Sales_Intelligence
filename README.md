@@ -8,14 +8,21 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
 
 ## Features
 
-- **Real-Time Sentiment Analysis**: Detects the sentiment of the conversation (Very Positive, Positive, Neutral, Negative, Very Negative)
-- **Emotion Detection**: Identifies the emotional state of the buyer (Excitement, Frustration, etc.)
-- **Buyer Engagement Analysis**: Assesses the level of buyer engagement (Low, Moderate, High)
-- **Purchase Intent Analysis**: Classifies the buyer's purchase intent (Immediate, Exploratory, etc.)
-- **Behavioral Intent Analysis**: Identifies behavioral intent signals (Website browsing, Cart abandonment, etc.).
-- **Advanced Intent Detection**: Detects advanced intent markers (High-value lead identification, etc.).
-- **Integration with CRM and Google Sheets**: Stores and analyzes data for future reference
-- 
+- **Sentiment Analysis**: Understand user sentiment (e.g., Positive, Negative, Neutral).
+- **Emotion Detection**: Identify user emotions such as Excitement, Frustration, or Confusion.
+- **Purchase Intent Analysis**: Classify the urgency and intent of a user (e.g., Immediate, Exploratory, or Comparative).
+- **Behavioral Insights**: Analyze user browsing patterns and behavioral signals.
+- **Advanced Intent Detection**: Pinpoint high-value and sales-qualified leads.
+- **Personalized Recommendations**: Offer customized product suggestions based on user preferences.
+- **CRM Integration**: Track user interactions and history for a personalized experience.
+- **Post-Call Insights**: Generate actionable summaries, analytics, and follow-up suggestions.
+- **Negotiation Coaching**: Provide negotiation strategies and objection-handling tips.
+- **Google Sheets Integration**: Automatically log analytics into Google Sheets for tracking and analysis.
+- **Real-Time Speech Recognition**: Captures user speech during sales calls and provides real-time insights.
+- **Dashboard Visualization**: Displays real-time sentiment, emotion, engagement, and other metrics during the call.
+- **Transcription & Analysis Export**: Saves call transcriptions and analysis results to an Excel file for further review.
+- **Feedback Mechanism**: Allows users to provide feedback (thumbs_up or thumbs_down) on recommendations, which improves future suggestions.
+
 ## Demo
 
 <!-- Add a GIF or video demo of your project in action -->
@@ -59,60 +66,173 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
 
 4. Set environment variables:
 
-     Create a `.env` file in the root directory and add your Groq API key:
+     Create a Groq API key and save it in config.py file and choose your preferred LLM model(Mixtral, Llama etc.,.)
 
       ```env
+      # Groq API Key
       GROQ_API_KEY=your_groq_api_key_here
+
+      # LLM Model
+      LLM_MODEL = "any open source llm model"  
       ```
 
-5. Run the Flask app:
+5. Run the Application:
 
     ```bash
-    python app.py
+    uvicorn app.main:app --reload
     ```
 
 6. Open the application in your browser:
 
     ```
-    http://localhost:5000
+    http://127.0.0.1:8000
     ```
 
 ## Usage
 
-1. Open the application in audio supported browser.
-2. Click **Start Recording** to begin speech recognition.
-3. Speak into the microphone just like a sales call.
-4. View real-time insights (sentiment, emotion, engagement, etc.) on the dashboard.
-5. Click **Stop Recording** to end the session.
-6. Save the transcription and analysis results to an Excel file.
+### Step-by-Step Guide
 
-## API Documentation
+1. Open the Application:
 
-### Endpoint: `/get_response`
+    Ensure you are using an audio-supported browser (e.g., Chrome, Firefox).
+    
+    Navigate to the application URL (http://127.0.0.1:8000).
 
-- **Method**: POST
-- **Request Body**:
+2. Start the Application:
 
-    ```json
-    {
-      "user_input": "Transcribed text from the user"
-    }
-    ```
+    Click the microphone button (green button) to begin speech recognition. This simulates attending a sales call.
 
-- **Response Body**:
+3. Speak into the Microphone:
 
-    ```json
-    {
-      "response": "User input",
-      "sentiment": "Positive",
-      "emotion": "Excitement",
-      "engagement": "High",
-      "purchase_intent": "Immediate purchase intent",
-      "behavioral_intent": "Website browsing intent",
-      "advanced_intent": "High-value lead identification",
-      "suggestions": "Suggestions based on the input"
-    }
-    ```
+    Speak naturally into the microphone as if you are having a sales conversation with a customer.
+    
+    The application will capture your speech in real-time and process it for insights.
+
+4. View Real-Time Insights:
+
+    As you speak, the Sales View Dashboard will display real-time insights, including:
+    
+    Sentiment: Positive, Negative, Neutral, etc.
+    
+    Emotion: Excitement, Frustration, Confusion, etc.
+    
+    Engagement: Low, Moderate, High.
+    
+    Purchase Intent: Immediate, Exploratory, Comparative, etc.
+    
+    Behavioral Intent: Website browsing, Product page exploration, etc.
+    
+    Advanced Intent: High-value lead identification, Sales-qualified lead potential, etc.
+   
+5. Provide Feedback:
+
+    After receiving product recommendations, you can provide feedback using the thumbs_up or thumbs_down buttons.
+    
+    Thumbs Up: Indicates satisfaction with the recommendations. The system will prioritize similar products in the future.
+    
+    Thumbs Down: Indicates dissatisfaction. The system will adjust its recommendations by broadening the search or shuffling results.
+
+6. Stop the Recording:
+
+    Click the Stop Recording button to end the session.
+    
+    The application will finalize the transcription and analysis.
+
+7. Save the Results:
+
+    After stopping the recording, you can save the transcription and analysis results to an Excel file for further review.
+    
+    The Excel file will include:
+    
+    Full call transcription.
+    
+    Sentiment, emotion, and intent analysis.
+    
+    Product recommendations (if applicable).
+    
+    Performance analytics and follow-up suggestions.
+   
+### Example Workflow
+
+1. Start a Call:
+
+    Click the microphone button to begin.
+    
+    Say: "Hi, I'm looking for a new smartphone with a good camera. My budget is around ₹30,000."
+
+2. Real-Time Insights:
+
+    The dashboard updates in real-time:
+    
+    Sentiment: Positive
+    
+    Emotion: Curiosity
+    
+    Purchase Intent: Immediate purchase intent
+    
+    Behavioral Intent: Product page exploration
+    
+    Advanced Intent: High-value lead identification
+
+3. Product Recommendations:
+
+    The system suggests 3 smartphones within the budget, prioritizing in-stock items.
+
+4. Provide Feedback:
+
+    If you like the recommendations, click Thumbs Up.
+    
+    If you are unsatisfied, click Thumbs Down to get alternative suggestions.
+
+5. End the Call:
+
+    Click Stop Recording.
+    
+    Save the transcription and analysis to an Excel file.
+   
+### Endpoints
+
+    GET /: Serves the main HTML page.
+    
+    POST /get_response: Processes user input and returns sentiment, emotion, intent analysis, and product recommendations.
+    
+    POST /handle_feedback: Handles user feedback and updates recommendations accordingly.
+    
+    POST /post_call_insights: Generates post-call insights, including summaries, performance analytics, and follow-up suggestions.
+    
+    POST /negotiation_coach: Provides negotiation tactics and objection handling strategies.
+
+
+## Feedback Mechanism
+   The feedback mechanism is a core feature of Sentimind AI, allowing users to improve the quality of recommendations over time. Here's how it works:
+    
+    1. Thumbs Up:
+    
+        Indicates that the user is satisfied with the recommendations.
+    
+        The system will:
+        
+        Prioritize similar products in future searches.
+    
+        Increase the weight of positive feedback in the CRM for personalized recommendations.
+    
+    2. Thumbs Down:
+    
+        Indicates that the user is dissatisfied with the recommendations.
+        
+        The system will:
+        
+        Broaden the search criteria or shuffle the results.
+        
+        Adjust the recommendation algorithm to avoid similar products in the future.
+        
+        Log the feedback in the CRM for future reference.
+    
+    3. Feedback Integration:
+    
+        All feedback is stored in the CRM under the user's profile.
+        
+        The system uses this feedback to refine its understanding of user preferences and improve future interactions.
 
 ## License
 
@@ -129,5 +249,6 @@ For questions or feedback, feel free to reach out:
 ## Acknowledgments
 
 - **Groq** for providing the AI API.
-- **Flask** for the backend framework.
-- **Tailwind CSS** for the frontend styling.
+- **FAISS**: For efficient similarity search and clustering of dense vectors.
+- **Sentence Transformers**: For generating high-quality sentence embeddings.
+- **FastAPI**: For building the API with high performance and ease of use.
