@@ -50,8 +50,8 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Resultyst/Infosys_Real_Time_Sales_Intelligence.git
-    cd Infosys_Real_Time_Sales_Intelligence
+    git clone https://github.com/Resultyst/Infosys_Sentimind_AI.git
+    cd Infosys_Sentimind_AI
     ```
 
 2. Set up the backend:
