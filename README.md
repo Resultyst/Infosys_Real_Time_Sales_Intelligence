@@ -156,8 +156,6 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
 
 ### **Endpoints**
 
-## Endpoints
-
 ### 1. GET /
 **Description:** Serves the main HTML page for the application.
 
