@@ -104,7 +104,7 @@
     - Use an audio-supported browser (e.g., Chrome, Firefox).
     - Navigate to the application URL: `http://127.0.0.1:8000`.
 
-2. **Start the Application**:
+2. **Start the session**:
     - Click the microphone button (green) to begin speech recognition.
 
 3. **Speak Naturally**:
@@ -119,8 +119,8 @@
     - Thumbs Up: Satisfied with recommendations.
     - Thumbs Down: Unsatisfied—adjusts future recommendations.
 
-5. **Stop the Recording**:
-    - End the session by clicking the Stop Recording button.
+5. **Stop the session**:
+    - End the session by clicking the microphone button(red).
     - Save the transcription and analysis to an Excel file.
 
 ### **Example Workflow**
