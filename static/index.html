@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentimind AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <style>
+        /* Toggle Switch Styles */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            /* Reduced from 60px */
+            height: 17px;
+            /* Reduced from 34px */
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4CAF50;
+            /* Green for User View */
+            transition: 0.4s;
+            border-radius: 17px;
+            /* Adjusted for smaller size */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 13px;
+            /* Reduced from 26px */
+            width: 13px;
+            /* Reduced from 26px */
+            left: 2px;
+            /* Adjusted for smaller size */
+            bottom: 2px;
+            /* Adjusted for smaller size */
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #9C27B0;
+            /* Purple for Salesperson View */
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(13px);
+            /* Adjusted for smaller size */
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 17px;
+            /* Adjusted for smaller size */
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Ensure the microphone button is centered */
+        .flex.items-center.justify-center {
+            margin: 0 20px;
+            /* Add some spacing around the mic button */
+        }
+
+        #suggestions-result {
+            white-space: pre-line;
+            /* Preserve line breaks in the recommendations */
+            font-family: 'Courier New', Courier, monospace;
+            /* Monospace font for better readability */
+            line-height: 1.6;
+            /* Improve line spacing */
+            padding: 10px;
+            background-color: #2d3748;
+            /* Darker background for contrast */
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Transcription List Styling */
+        #transcription-list {
+            list-style-type: none;
+            /* Remove default bullet points */
+            padding: 0;
+            margin: 0;
+        }
+
+        #transcription-list li {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: #2d3748;
+            /* Darker background for contrast */
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            /* Monospace font for better readability */
+            line-height: 1.6;
+            /* Improve line spacing */
+        }
+
+        /* Scrollable areas for transcript and suggestions */
+        .overflow-y-auto {
+            scrollbar-width: thin;
+            scrollbar-color: #4A5568 #2D3748;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: #4A5568;
+            border-radius: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background-color: #2D3748;
+        }
+
+        @media (max-width: 768px) {
+            #user-view {
+                flex-direction: column;
+                /* Stack sections vertically on smaller screens */
+            }
+
+            #salesperson-view {
+                flex-direction: column;
+                /* Stack sections vertically on smaller screens */
+            }
+
+            .flex.items-center.justify-center {
+                margin: 10px 0;
+                /* Adjust spacing for mic button on smaller screens */
+            }
+        }
+
+        /* Apply the same styling to Sales View sections */
+        #sentiment-result,
+        #emotion-result,
+        #purchase-intent,
+        #behavioral-intent,
+        #advanced-intent,
+        #call-summary,
+        #performance-analytics,
+        #deal-status,
+        #follow-up-suggestions,
+        #negotiation-tactics,
+        #objection-handling {
+            white-space: pre-line;
+            /* Preserve line breaks */
+            font-family: 'Courier New', Courier, monospace;
+            /* Monospace font */
+            line-height: 1.6;
+            /* Improve line spacing */
+            padding: 10px;
+            background-color: #2d3748;
+            /* Darker background for contrast */
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .bg-gray-700.overflow-y-auto {
+            height: 150px;
+            /* Set a fixed height */
+            overflow-y: auto;
+            /* Make content scrollable */
+        }
+
+        /* Ensure scrollable containers in Sales View */
+        #post-call-insights .bg-gray-800,
+        #negotiation-coach .bg-gray-800 {
+            height: 500px;
+            /* Set a fixed height */
+            overflow-y: auto;
+            /* Make content scrollable */
+        }
+
+        /* Responsive adjustments for Sales View */
+        @media (max-width: 768px) {
+            #salesperson-view {
+                flex-direction: column;
+                /* Stack sections vertically on smaller screens */
+            }
+
+            #post-call-insights .grid,
+            #negotiation-coach .grid {
+                grid-template-columns: 1fr;
+                /* Single column layout on smaller screens */
+            }
+        }
+
+        /* Loading Spinner */
+        #loading-spinner {
+            z-index: 1000;
+        }
+
+        #suggestions-result {
+            white-space: pre-line;
+            /* Preserve line breaks and spacing */
+            font-family: 'Courier New', Courier, monospace;
+            /* Monospace font for better readability */
+            line-height: 1.6;
+            /* Improve line spacing */
+            padding: 10px;
+            background-color: #2d3748;
+            /* Darker background for contrast */
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Welcome Message Styling */
+        .fixed {
+            position: fixed;
+            z-index: 1000;
+        }
+
+        .transform {
+            transform: translateX(-50%);
+        }
+
+        .bg-gray-800 {
+            background-color: #2d3748;
+        }
+
+        .text-white {
+            color: #ffffff;
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .space-x-4>*+* {
+            margin-left: 1rem;
+        }
+
+        .hover\:text-white:hover {
+            color: #ffffff;
+        }
+
+        /* Custom Notification Styling */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2d3748;
+            /* Dark background */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .notification.fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                top: -50px;
+                opacity: 0;
+            }
+
+            to {
+                top: 20px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b from-gray-800 to-gray-900 text-gray-200 h-screen p-8">
+
+    <!-- Initial Form -->
+    <div id="initial-form" class="max-w-md mx-auto mt-20">
+        <h1 class="text-4xl font-extrabold text-gray-100 mb-6 text-center">Welcome to Sentimind AI</h1>
+        <form id="user-info-form" class="bg-gray-700 p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+                <label for="name" class="block text-gray-300 mb-2">Name</label>
+                <input type="text" id="name" name="name" class="w-full px-3 py-2 bg-gray-600 text-gray-200 rounded-lg"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="email" class="block text-gray-300 mb-2">Email</label>
+                <input type="email" id="email" name="email"
+                    class="w-full px-3 py-2 bg-gray-600 text-gray-200 rounded-lg" required>
+            </div>
+            <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition-all">Connect</button>
+        </form>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div id="main-content" class="max-w-7xl mx-auto hidden">
+        <!-- Toggle Switch at Top Right Corner -->
+        <div class="absolute top-4 right-4 flex items-center space-x-2">
+            <span class="text-gray-300">UV</span>
+            <label class="switch">
+                <input type="checkbox" id="view-toggle">
+                <span class="slider round"></span>
+            </label>
+            <span class="text-gray-300">SV</span>
+        </div>
+
+        <!-- Header Section -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-gray-100 mb-3">🎙️ Sentimind AI: Real-Time Sentiment & Intent
+                Analysis 📊</h1>
+        </header>
+
+        <!-- User View Layout -->
+        <div id="user-view" class="flex flex-col md:flex-row gap-6 p-6">
+            <!-- Left: Live Transcript -->
+            <div class="flex-1 bg-gray-700 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-100">🗣️ Live Transcription</h2>
+                <div class="bg-gray-800 p-4 rounded-lg h-[500px] overflow-y-auto">
+                    <p id="spoken-text" class="text-lg text-gray-200">Your speech will appear here...</p>
+                </div>
+            </div>
+
+            <!-- Middle: Microphone Button and Save Transcript Button -->
+            <div class="flex items-center justify-center">
+                <!-- Start Recording Button (Phone Icon) -->
+                <button id="start-recording"
+                    class="w-16 h-16 bg-green-600 text-white rounded-full shadow-lg transform hover:scale-105 hover:bg-green-500 transition-all flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                </button>
+
+                <!-- Stop Recording Button (Phone Hangup Icon) -->
+                <button id="stop-recording"
+                    class="w-16 h-16 bg-red-600 text-white rounded-full shadow-lg hidden transform hover:scale-105 hover:bg-red-500 transition-all flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <button id="save-transcript"
+                    class="w-16 h-16 bg-blue-600 text-white rounded-full shadow-lg transform hover:scale-105 hover:bg-blue-500 transition-all flex items-center justify-center hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Right: Suggestions -->
+            <div class="flex-1 bg-gray-700 p-6 rounded-lg shadow-md relative">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-100">💡Recommendations</h2>
+                <div class="bg-gray-800 p-4 rounded-lg h-[500px] overflow-y-auto">
+                    <p id="suggestions-result" class="text-lg text-gray-200">Recommendations will appear here...</p>
+                </div>
+                <!-- Add this inside the "Recommendations" section -->
+                <div class="absolute bottom-2 right-2 flex space-x-2">
+                    <!-- Thumbs Up Icon -->
+                    <button id="thumbs-up" class="text-gray-400 hover:text-gray-300 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                        </svg>
+                    </button>
+
+                    <!-- Thumbs Down Icon -->
+                    <button id="thumbs-down" class="text-gray-400 hover:text-gray-300 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                                d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.105-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Salesperson View Content -->
+        <div id="salesperson-view" class="hidden">
+            <!-- Salesperson View Layout -->
+            <div class="flex flex-col md:flex-row gap-10 mb-10">
+                <!-- Left Column: Transcription and Sentiment Trend -->
+                <div class="flex-1">
+                    <!-- Live Transcription Section -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold mb-4 text-gray-100">🗣️ Live Transcription:</h2>
+                        <div class="bg-gray-800 p-4 rounded-lg h-[500px] overflow-y-auto">
+                            <ul id="transcription-list" class="text-lg text-gray-200">
+                                <!-- Transcripts with timestamps will appear here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Sentiment Trend Chart -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold mb-4 text-gray-100">📊 Sentiment Trend:</h2>
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <canvas id="sentiment-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Engagement and Intent Analysis -->
+                <div class="flex-1">
+                    <!-- Current Sentiment and Emotional State -->
+                    <div class="mt-8 bg-gray-800 p-4 rounded-lg shadow-md mb-8">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Current Sentiment</h3>
+                        <div class="bg-gray-700 p-4 rounded-lg h-[150px] overflow-y-auto">
+                            <p id="sentiment-result" class="text-lg text-gray-200 whitespace-pre-line">Neutral</p>
+                        </div>
+                    </div>
+
+                    <!-- Emotional State -->
+                    <div class="mt-8 bg-gray-800 p-4 rounded-lg shadow-md mb-8">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Emotional State</h3>
+                        <div class="bg-gray-700 p-4 rounded-lg h-[150px] overflow-y-auto">
+                            <p id="emotion-result" class="text-lg text-gray-200 whitespace-pre-line">Neutral</p>
+                        </div>
+                    </div>
+
+                    <!-- Buyer Engagement Section -->
+                    <div class="mt-8 bg-gray-800 p-4 rounded-lg shadow-md mb-8">
+                        <h3 class="text-lg font-medium text-gray-300">Buyer Engagement</h3>
+                        <div class="relative mt-4 bg-gray-600 h-6 rounded-lg overflow-hidden">
+                            <div id="engagement-bar" class="absolute top-0 left-0 h-full"
+                                style="width: 50%; background-color: orange;"></div>
+                        </div>
+                        <p id="engagement-feedback" class="mt-2 text-lg text-gray-100 text-center">Moderate engagement
+                        </p>
+                    </div>
+
+                    <!-- Intent Analysis Section -->
+                    <div class="mt-8 bg-gray-800 p-4 rounded-lg shadow-md mb-8">
+                        <h3 class="text-lg font-medium text-gray-300">Intent Analysis</h3>
+                        <div class="mt-4">
+                            <p id="purchase-intent" class="text-lg text-gray-200 whitespace-pre-line">Purchase Intent:
+                                Not Available</p>
+                            <p id="behavioral-intent" class="text-lg text-gray-200 whitespace-pre-line">Behavioral
+                                Intent: Not Available</p>
+                            <p id="advanced-intent" class="text-lg text-gray-200 whitespace-pre-line">Advanced Intent:
+                                Not Available</p>
+                        </div>
+                    </div>
+
+                    <!-- Save Transcript Button in Sales View -->
+                    <div class="mt-8 flex justify-center">
+                        <button id="save-transcript-sales"
+                            class="w-48 h-12 bg-blue-600 text-white rounded-lg shadow-lg transform hover:scale-105 hover:bg-blue-500 transition-all flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Save Transcript
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post-Call Insights Section -->
+            <div id="post-call-insights" class="hidden bg-gray-700 p-6 rounded-lg shadow-md mt-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-100">📊 Post-Call Insights</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Call Summary -->
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Call Summary</h3>
+                        <p id="call-summary" class="text-lg text-gray-200 whitespace-pre-line">Summary will appear
+                            here...</p>
+                    </div>
+
+                    <!-- Performance Analytics -->
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Performance Analytics</h3>
+                        <p id="performance-analytics" class="text-lg text-gray-200 whitespace-pre-line">Analytics will
+                            appear here...</p>
+                    </div>
+
+                    <!-- Deal Status -->
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Deal Status</h3>
+                        <p id="deal-status" class="text-lg text-gray-200 whitespace-pre-line">Status will appear here...
+                        </p>
+                    </div>
+
+                    <!-- Follow-Up Suggestions -->
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Follow-Up Suggestions</h3>
+                        <p id="follow-up-suggestions" class="text-lg text-gray-200 whitespace-pre-line">Suggestions will
+                            appear here...</p>
+                    </div>
+                </div>
+
+                <!-- Save Insights Button -->
+                <div class="mt-6 flex justify-center">
+                    <button id="save-insights"
+                        class="w-48 h-12 bg-blue-600 text-white rounded-lg shadow-lg transform hover:scale-105 hover:bg-blue-500 transition-all flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Save Insights
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI-Powered Negotiation Coach Section -->
+            <div id="negotiation-coach" class="hidden bg-gray-700 p-6 rounded-lg shadow-md mt-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-100">🤖 AI-Powered Negotiation Coach</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Negotiation Tactics -->
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Negotiation Tactics</h3>
+                        <p id="negotiation-tactics" class="text-lg text-gray-200 whitespace-pre-line">Tactics will
+                            appear here...</p>
+                    </div>
+
+                    <!-- Objection Handling -->
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-300 mb-2">Objection Handling</h3>
+                        <p id="objection-handling" class="text-lg text-gray-200 whitespace-pre-line">Suggestions will
+                            appear here...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <p class="text-gray-200">Generating insights...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const initialForm = document.getElementById('initial-form');
+        const mainContent = document.getElementById('main-content');
+        const userInfoForm = document.getElementById('user-info-form');
+        const viewToggle = document.getElementById('view-toggle');
+        const userView = document.getElementById('user-view');
+        const salespersonView = document.getElementById('salesperson-view');
+
+        // Toggle Switch Logic
+        viewToggle.addEventListener('change', () => {
+            if (viewToggle.checked) {
+                // Salesperson View
+                userView.classList.add('hidden');
+                salespersonView.classList.remove('hidden');
+                document.getElementById('post-call-insights').classList.remove('hidden'); // Show Post-Call Insights
+                document.getElementById('negotiation-coach').classList.remove('hidden'); // Show Negotiation Coach
+            } else {
+                // User View
+                userView.classList.remove('hidden');
+                salespersonView.classList.add('hidden');
+                document.getElementById('post-call-insights').classList.add('hidden'); // Hide Post-Call Insights
+                document.getElementById('negotiation-coach').classList.add('hidden'); // Hide Negotiation Coach
+            }
+        });
+
+        document.getElementById('user-info-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // Save user data to local storage
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
+
+            // Check if the user is new or existing
+            fetch('/get_response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_input: '', // Empty input to trigger the check
+                    user_name: name,
+                    email: email
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide the initial form and show the main content
+                    document.getElementById('initial-form').classList.add('hidden');
+                    document.getElementById('main-content').classList.remove('hidden');
+
+                    // Display welcome message based on user status
+                    if (data.is_existing_user) {
+                        if (data.last_product) {
+                            showNotification(`👋 Welcome back, ${data.user_name}! Last time, you were looking for ${data.last_product}.`);
+                        } else {
+                            showNotification(`👋 Welcome back, ${data.user_name}!`);
+                        }
+                    } else {
+                        showNotification('🎉 Welcome to Sentimind AI!'); // Auto-dismissing notification for new users
+                        showNotification('🌟 New user detected! We\'re excited to have you on board. Let\'s get started!'); // Auto-dismissing pop-up
+                    }
+
+                    // Default to User View
+                    viewToggle.checked = false;
+                    userView.classList.remove('hidden');
+                    salespersonView.classList.add('hidden');
+                })
+                .catch(error => {
+                    console.error('Error checking user status:', error);
+                });
+        });
+        // Rest of your existing JavaScript code for the main UI
+        const startRecordingBtn = document.getElementById('start-recording');
+        const stopRecordingBtn = document.getElementById('stop-recording');
+        const saveTranscriptBtn = document.getElementById('save-transcript');
+        const saveTranscriptSalesBtn = document.getElementById('save-transcript-sales');
+        const spokenText = document.getElementById('spoken-text');
+        const sentimentResult = document.getElementById('sentiment-result');
+        const emotionResult = document.getElementById('emotion-result');
+        const engagementBar = document.getElementById('engagement-bar');
+        const engagementFeedback = document.getElementById('engagement-feedback');
+        const purchaseIntent = document.getElementById('purchase-intent');
+        const behavioralIntent = document.getElementById('behavioral-intent');
+        const advancedIntent = document.getElementById('advanced-intent');
+        const suggestionsResult = document.getElementById('suggestions-result');
+        const transcriptionList = document.getElementById('transcription-list');
+        const negotiationTactics = document.getElementById('negotiation-tactics');
+        const objectionHandling = document.getElementById('objection-handling');
+
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.continuous = true;
+
+        let sentimentData = [];
+        let sentimentLabels = [];
+        let isRecording = false;
+        let transcriptionData = [];
+
+        const ctx = document.getElementById('sentiment-chart').getContext('2d');
+        const sentimentChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: sentimentLabels,
+                datasets: [{
+                    label: 'Sentiment Trend',
+                    data: sentimentData,
+                    borderColor: '#4CAF50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    fill: true,
+                    lineTension: 0.2,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        min: -1,
+                        max: 1,
+                        ticks: {
+                            stepSize: 0.5
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            lineWidth: 0.5
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    annotation: {
+                        annotations: {
+                            line0: {
+                                type: 'line',
+                                yMin: 0,
+                                yMax: 0,
+                                borderColor: '#FF5722',
+                                borderWidth: 2,
+                                label: {
+                                    enabled: false
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add this to your existing JavaScript in index.html
+        // Add this function to your JavaScript
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <span>${message}</span>
+            `;
+
+            // Append the notification to the body
+            document.body.appendChild(notification);
+
+            // Automatically remove the notification after 4 seconds
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                notification.addEventListener('animationend', () => {
+                    notification.remove();
+                });
+            }, 4000); // 4 seconds
+        }
+
+
+
+        recognition.onstart = () => {
+            console.log("Recording started"); // Debugging
+            isRecording = true;
+            startRecordingBtn.classList.add('hidden');
+            stopRecordingBtn.classList.remove('hidden');
+            saveTranscriptBtn.classList.remove('hidden');
+            saveTranscriptSalesBtn.classList.remove('hidden');
+        };
+
+        recognition.onend = () => {
+            console.log("Recording stopped"); // Debugging
+            isRecording = false;
+            startRecordingBtn.classList.remove('hidden');
+            stopRecordingBtn.classList.add('hidden');
+            saveTranscriptBtn.classList.remove('hidden');
+            saveTranscriptSalesBtn.classList.remove('hidden');
+
+            // Generate post-call insights
+            generatePostCallInsights();
+        };
+
+        recognition.onresult = (event) => {
+            console.log("Speech recognized"); // Debugging
+            const text = event.results[event.results.length - 1][0].transcript;
+
+            // Retrieve user name from local storage
+            const userName = localStorage.getItem('userName') || 'You';
+
+            // Update live transcription with user's name
+            spokenText.textContent = `${userName} said: ${text}`;
+
+            // Handle user input for coaching
+            handleUserInputForCoaching(text);
+
+            fetch('/get_response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_input: text,
+                    user_name: localStorage.getItem('userName') || 'You',
+                    email: localStorage.getItem('userEmail')
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const sentiment = data.sentiment;
+                    const emotion = data.emotion;
+                    const engagement = data.engagement;
+                    const purchase = data.purchase_intent;
+                    const behavioral = data.behavioral_intent;
+                    const advanced = data.advanced_intent;
+                    const suggestions = data.suggestions;
+                    const timestamp = new Date().toLocaleString();
+
+                    // Update sentiment, emotion, engagement, and intent results
+                    sentimentResult.textContent = `${sentiment}`;
+                    emotionResult.textContent = `${emotion}`;
+                    purchaseIntent.textContent = `Purchase Intent: ${purchase}`;
+                    behavioralIntent.textContent = `Behavioral Intent: ${behavioral}`;
+                    advancedIntent.textContent = `Advanced Intent: ${advanced}`;
+
+                    // Format recommendations with proper spacing and line breaks
+                    const formattedSuggestions = suggestions
+                        .split('\n') // Split by line breaks
+                        .map(line => line.trim()) // Remove extra spaces
+                        .filter(line => line.length > 0) // Remove empty lines
+                        .join('\n\n'); // Add double line breaks between recommendations
+
+                    suggestionsResult.textContent = formattedSuggestions;
+
+                    // Update sentiment chart
+                    let sentimentValue = 0;
+                    let sentimentColor = '#FF5722';
+                    if (sentiment === 'Very Positive') {
+                        sentimentValue = 1;
+                        sentimentColor = '#4CAF50';
+                    } else if (sentiment === 'Positive') {
+                        sentimentValue = 0.5;
+                        sentimentColor = '#8BC34A';
+                    } else if (sentiment === 'Neutral') {
+                        sentimentValue = 0;
+                        sentimentColor = '#FF9800';
+                    } else if (sentiment === 'Negative') {
+                        sentimentValue = -0.5;
+                        sentimentColor = '#F44336';
+                    } else if (sentiment === 'Very Negative') {
+                        sentimentValue = -1;
+                        sentimentColor = '#D32F2F';
+                    }
+
+                    sentimentChart.data.datasets[0].borderColor = sentimentColor;
+                    sentimentChart.data.datasets[0].backgroundColor = `${sentimentColor}30`;
+
+                    sentimentData.push(sentimentValue);
+                    sentimentLabels.push(timestamp);
+                    sentimentChart.update();
+
+                    // Update engagement bar
+                    let engagementPercentage = 50;
+                    let engagementText = "Moderate engagement";
+
+                    if (sentiment === 'Very Positive') {
+                        engagementPercentage = 100;
+                        engagementText = "High engagement";
+                    } else if (sentiment === 'Positive') {
+                        engagementPercentage = 75;
+                        engagementText = "Moderate-to-High engagement";
+                    } else if (sentiment === 'Neutral') {
+                        engagementPercentage = 50;
+                        engagementText = "Moderate engagement";
+                    } else if (sentiment === 'Negative') {
+                        engagementPercentage = 25;
+                        engagementText = "Low engagement";
+                    } else if (sentiment === 'Very Negative') {
+                        engagementPercentage = 10;
+                        engagementText = "Very Low engagement";
+                    }
+
+                    engagementBar.style.width = `${engagementPercentage}%`;
+                    engagementFeedback.textContent = engagementText;
+
+                    // Add transcription data to the list
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${timestamp}: ${userName} said: ${text}`;
+                    transcriptionList.appendChild(listItem);
+
+                    // Save transcription data for export
+                    transcriptionData.push({
+                        timestamp: timestamp,
+                        user_input: text,
+                        sentiment: sentiment,
+                        emotion: emotion,
+                        engagement: engagementText,
+                        purchase_intent: purchase,
+                        behavioral_intent: behavioral,
+                        advanced_intent: advanced,
+                        suggestions: suggestions
+                    });
+                });
+        };
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error:", event.error); // Debugging
+        };
+
+        startRecordingBtn.addEventListener('click', () => {
+            console.log("Start Recording clicked"); // Debugging
+            recognition.start();
+        });
+
+        stopRecordingBtn.addEventListener('click', () => {
+            console.log("Stop Recording clicked"); // Debugging
+            recognition.stop();
+        });
+
+        // Add this to your existing JavaScript code
+        const thumbsUpBtn = document.getElementById('thumbs-up');
+        const thumbsDownBtn = document.getElementById('thumbs-down');
+
+        thumbsUpBtn.addEventListener('click', () => handleFeedback('thumbs_up'));
+        thumbsDownBtn.addEventListener('click', () => handleFeedback('thumbs_down'));
+
+        const handleFeedback = async (feedback) => {
+            try {
+                // Get the current user input, email, and user name
+                const userInput = spokenText.textContent.replace(`${localStorage.getItem('userName')} said: `, '');
+                const email = localStorage.getItem('userEmail');
+                const userName = localStorage.getItem('userName') || 'You';
+
+                // Send feedback to the backend
+                const response = await fetch('/handle_feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_input: userInput,
+                        email: email,
+                        feedback: feedback,
+                        user_name: userName  // Pass user_name to the backend
+                    })
+                });
+
+                if (response.ok) {
+                    // Regenerate recommendations only for thumbs down
+                    if (feedback === 'thumbs_down') {
+                        const data = await response.json();
+                        suggestionsResult.textContent = data.new_recommendations; // Preserve formatting
+                    } else {
+                        // For thumbs up, do not change recommendations
+                        alert('Thank you for your feedback!');
+                    }
+                } else {
+                    console.error('Failed to send feedback');
+                }
+            } catch (error) {
+                console.error('Error handling feedback:', error);
+            }
+        };
+        // Save Transcript Functionality (for both User and Sales Views)
+        const saveTranscript = () => {
+            const workbook = XLSX.utils.book_new();
+            const worksheetData = [
+                ["Date & Timestamp", "User Input", "Sentiment", "Emotional State", "Buyer Engagement", "Purchase Intent", "Behavioral Intent", "Advanced Intent", "Suggestions"]
+            ];
+
+            transcriptionData.forEach(entry => {
+                worksheetData.push([
+                    entry.timestamp,
+                    entry.user_input,
+                    entry.sentiment,
+                    entry.emotion,
+                    entry.engagement,
+                    entry.purchase_intent,
+                    entry.behavioral_intent,
+                    entry.advanced_intent,
+                    entry.suggestions
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Transcript');
+            XLSX.writeFile(workbook, 'transcript.xlsx');
+        };
+
+        saveTranscriptBtn.addEventListener('click', saveTranscript);
+        saveTranscriptSalesBtn.addEventListener('click', saveTranscript);
+
+        // Function to generate post-call insights
+        const generatePostCallInsights = async () => {
+            try {
+                // Combine all transcriptions into a single string
+                const transcription = transcriptionData.map(entry => entry.user_input).join(' ');
+
+                // Show loading spinner
+                document.getElementById('loading-spinner').classList.remove('hidden');
+
+                // Fetch insights from the backend
+                const response = await fetch('/post_call_insights', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ transcription })
+                });
+
+                const data = await response.json();
+
+                // Hide loading spinner
+                document.getElementById('loading-spinner').classList.add('hidden');
+
+                // Display insights in the UI
+                document.getElementById('call-summary').textContent = data.summary;
+                document.getElementById('performance-analytics').textContent = data.performance_analytics;
+                document.getElementById('deal-status').textContent = data.deal_status;
+                document.getElementById('follow-up-suggestions').textContent = data.follow_up_suggestions;
+
+                // Show the post-call insights section only in Salesperson View
+                if (viewToggle.checked) {
+                    document.getElementById('post-call-insights').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error generating post-call insights:', error);
+                alert('Failed to generate post-call insights. Please try again.');
+            }
+        };
+
+        // Function to save insights as a file
+        const saveInsights = () => {
+            const insights = {
+                summary: document.getElementById('call-summary').textContent,
+                performanceAnalytics: document.getElementById('performance-analytics').textContent,
+                dealStatus: document.getElementById('deal-status').textContent,
+                followUpSuggestions: document.getElementById('follow-up-suggestions').textContent
+            };
+
+            // Convert insights to JSON
+            const jsonData = JSON.stringify(insights, null, 2);
+
+            // Create a Blob and download the file
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'post_call_insights.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        // Event listener for the "Save Insights" button
+        document.getElementById('save-insights').addEventListener('click', saveInsights);
+
+        // Function to provide negotiation coaching
+        const provideNegotiationCoaching = async (user_input) => {
+            try {
+                // Show loading spinner
+                document.getElementById('loading-spinner').classList.remove('hidden');
+
+                // Fetch coaching suggestions from the backend
+                const response = await fetch('/negotiation_coach', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ user_input })
+                });
+
+                const data = await response.json();
+
+                // Hide loading spinner
+                document.getElementById('loading-spinner').classList.add('hidden');
+
+                // Display coaching suggestions in the UI
+                negotiationTactics.textContent = data.negotiation_tactics;
+                objectionHandling.textContent = data.objection_handling;
+
+                // Show the negotiation coach section only in Salesperson View
+                if (viewToggle.checked) {
+                    document.getElementById('negotiation-coach').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error providing negotiation coaching:', error);
+                alert('Failed to provide negotiation coaching. Please try again.');
+            }
+        };
+
+        // Function to handle user input for coaching
+        const handleUserInputForCoaching = (text) => {
+            const coachingKeywords = ["price", "discount", "deal", "offer", "negotiate"];
+            if (coachingKeywords.some(keyword => text.toLowerCase().includes(keyword))) {
+                provideNegotiationCoaching(text);
+            }
+        };
+    </script>
+</body>
+
+</html>

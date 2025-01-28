@@ -1,10 +1,22 @@
-import os
-from dotenv import load_dotenv
+# config.py
 
-# Load environment variables
+# Groq API Key
+GROQ_API_KEY = "your-groq-api-key"
 
-load_dotenv(override=True)
+# LLM Model
+LLM_MODEL = "any open source llm model"  
 
-class Config:
-    GROQ_API_KEY = os.getenv('GROQ_API_KEY')
-    GROQ_MODEL = "mixtral-8x7b-32768"
+# FAISS Index Path
+FAISS_INDEX_PATH = "data/index.faiss"
+
+# Metadata CSV Path
+METADATA_CSV_PATH = "data/metadata.csv"
+
+# CRM Data Path
+CRM_DATA_PATH = "data/crm_data.json"
+
+# Allowed Products
+ALLOWED_PRODUCTS = [
+    "smart watches", "headphones", "laptops", "smartphones",
+    "watches", "earphones", "tablets", "cameras", "printers"
+]
