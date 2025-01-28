@@ -2,11 +2,7 @@
 
 ![Project Banner](assets/banner.png)
 
-**Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant**
-
-Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant - Sentimind AI aims to transform the sales process by developing an AI-powered assistant that provides real-time sentiment analysis, intent detection, personalized recommendations, and negotiation coaching. 
-
-It reduces manual effort, improves customer engagement, and optimizes the sales workflow. 
+**Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant - Sentimind AI aims to transform the sales process by developing an AI-powered assistant that provides real-time sentiment analysis, intent detection, personalized recommendations, and negotiation coaching. It reduces manual effort, improves customer engagement, and optimizes the sales workflow.**
 
 ---
 
