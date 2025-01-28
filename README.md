@@ -1,51 +1,61 @@
-# Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant (Sentimind AI)
+# Sentimind AI
 
 ![Project Banner](assets/banner.png)
 
-Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant aims to transform the sales process by developing an AI-powered assistant that provides real-time sentiment analysis, intent detection, personalized recommendations, and negotiation coaching. 
+**Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant**
+
+Real-Time AI Sales Intelligence and Sentiment-Driven Deal Negotiation Assistant - Sentimind AI aims to transform the sales process by developing an AI-powered assistant that provides real-time sentiment analysis, intent detection, personalized recommendations, and negotiation coaching. 
 
 It reduces manual effort, improves customer engagement, and optimizes the sales workflow. 
 
-## Features
+---
+
+## **Features**
 
 - **Sentiment Analysis**: Understand user sentiment (e.g., Positive, Negative, Neutral).
-- **Emotion Detection**: Identify user emotions such as Excitement, Frustration, or Confusion.
-- **Purchase Intent Analysis**: Classify the urgency and intent of a user (e.g., Immediate, Exploratory, or Comparative).
-- **Behavioral Insights**: Analyze user browsing patterns and behavioral signals.
-- **Advanced Intent Detection**: Pinpoint high-value and sales-qualified leads.
-- **Personalized Recommendations**: Offer customized product suggestions based on user preferences.
-- **CRM Integration**: Track user interactions and history for a personalized experience.
-- **Post-Call Insights**: Generate actionable summaries, analytics, and follow-up suggestions.
-- **Negotiation Coaching**: Provide negotiation strategies and objection-handling tips.
-- **Google Sheets Integration**: Automatically log analytics into Google Sheets for tracking and analysis.
-- **Real-Time Speech Recognition**: Captures user speech during sales calls and provides real-time insights.
-- **Dashboard Visualization**: Displays real-time sentiment, emotion, engagement, and other metrics during the call.
-- **Transcription & Analysis Export**: Saves call transcriptions and analysis results to an Excel file for further review.
-- **Feedback Mechanism**: Allows users to provide feedback (thumbs_up or thumbs_down) on recommendations, which improves future suggestions.
+- **Emotion Detection**: Identify user emotions like Excitement, Frustration, or Confusion.
+- **Purchase Intent Analysis**: Determine urgency and intent (e.g., Immediate, Exploratory, or Comparative).
+- **Behavioral Insights**: Analyze browsing patterns and behavioral signals.
+- **Advanced Intent Detection**: Spot high-value, sales-qualified leads.
+- **Personalized Recommendations**: Offer customized product suggestions.
+- **CRM Integration**: Track user interactions for a personalized experience.
+- **Post-Call Insights**: Generate actionable summaries and follow-up suggestions.
+- **Negotiation Coaching**: Provide strategies and objection-handling tips.
+- **Google Sheets Integration**: Log analytics into Google Sheets automatically.
+- **Real-Time Speech Recognition**: Capture user speech and provide real-time insights.
+- **Dashboard Visualization**: Display real-time sentiment, emotion, and engagement metrics during calls.
+- **Transcription & Analysis Export**: Save call transcripts and analysis results to Excel files.
+- **Feedback Mechanism**: Improve recommendations through thumbs-up or thumbs-down feedback.
 
-## Demo
+---
+
+## **Demo**
 
 <!-- Add a GIF or video demo of your project in action -->
 
-## Table of Contents
+---
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
-- [API Documentation](#api-documentation)
-- [License](#license)
-- [Contact](#contact)
-- [Acknowledgments](#acknowledgments)
+## **Table of Contents**
 
-## Installation
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Features](#features)
+4. [API Documentation](#api-documentation)
+5. [License](#license)
+6. [Contact](#contact)
+7. [Acknowledgments](#acknowledgments)
 
-### Prerequisites
+---
+
+## **Installation**
+
+### **Prerequisites**
 
 - Python 3.x
-- Groq API Key (Sign up at [Groq](https://www.groq.com))
-- Google Sheets & Drive API (Enable at[Google Cloud Console](https://console.cloud.google.com))
+- Groq API Key ([Sign up at Groq](https://www.groq.com))
+- Google Sheets & Drive API ([Enable at Google Cloud Console](https://console.cloud.google.com))
 
-### Steps
+### **Steps**
 
 1. Clone the repository:
 
@@ -60,23 +70,23 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
     pip install -r requirements.txt
     ```
 
-3. Set up the frontend:
+3. Serve the frontend:
 
-     Serve the `index.html` file.
+    Serve the `index.html` file using your preferred web server.
 
-4. Set environment variables:
+4. Configure environment variables:
 
-     Create a Groq API key and save it in config.py file and choose your preferred LLM model(Mixtral, Llama etc.,.)
+    Add your Groq API key and preferred LLM model in the `config.py` file:
 
-      ```env
-      # Groq API Key
-      GROQ_API_KEY=your_groq_api_key_here
+    ```env
+    # Groq API Key
+    GROQ_API_KEY=your_groq_api_key_here
 
-      # LLM Model
-      LLM_MODEL = "any open source llm model"  
-      ```
+    # LLM Model
+    LLM_MODEL="any open source llm model"
+    ```
 
-5. Run the Application:
+5. Run the application:
 
     ```bash
     uvicorn app.main:app --reload
@@ -88,167 +98,293 @@ It reduces manual effort, improves customer engagement, and optimizes the sales 
     http://127.0.0.1:8000
     ```
 
-## Usage
+---
 
-### Step-by-Step Guide
+## **Usage**
 
-1. Open the Application:
+### **Step-by-Step Guide**
 
-    Ensure you are using an audio-supported browser (e.g., Chrome, Firefox).
-    
-    Navigate to the application URL (http://127.0.0.1:8000).
+1. **Open the Application**:
+    - Use an audio-supported browser (e.g., Chrome, Firefox).
+    - Navigate to the application URL: `http://127.0.0.1:8000`.
 
-2. Start the Application:
+2. **Start the Application**:
+    - Click the microphone button (green) to begin speech recognition.
 
-    Click the microphone button (green button) to begin speech recognition. This simulates attending a sales call.
+3. **Speak Naturally**:
+    - Engage in a simulated sales conversation.
+    - Real-time insights will display on the dashboard:
+      - Sentiment: Positive, Negative, Neutral, etc.
+      - Emotion: Excitement, Frustration, Confusion, etc.
+      - Engagement: Low, Moderate, High.
+      - Purchase Intent: Immediate, Exploratory, Comparative, etc.
 
-3. Speak into the Microphone:
+4. **Provide Feedback**:
+    - Thumbs Up: Satisfied with recommendations.
+    - Thumbs Down: Unsatisfied—adjusts future recommendations.
 
-    Speak naturally into the microphone as if you are having a sales conversation with a customer.
-    
-    The application will capture your speech in real-time and process it for insights.
+5. **Stop the Recording**:
+    - End the session by clicking the Stop Recording button.
+    - Save the transcription and analysis to an Excel file.
 
-4. View Real-Time Insights:
+### **Example Workflow**
 
-    As you speak, the Sales View Dashboard will display real-time insights, including:
-    
-    Sentiment: Positive, Negative, Neutral, etc.
-    
-    Emotion: Excitement, Frustration, Confusion, etc.
-    
-    Engagement: Low, Moderate, High.
-    
-    Purchase Intent: Immediate, Exploratory, Comparative, etc.
-    
-    Behavioral Intent: Website browsing, Product page exploration, etc.
-    
-    Advanced Intent: High-value lead identification, Sales-qualified lead potential, etc.
-   
-5. Provide Feedback:
+1. **Start a Call**:
+    - Say: "Hi, I'm looking for a new smartphone with a good camera. My budget is around ₹30,000."
 
-    After receiving product recommendations, you can provide feedback using the thumbs_up or thumbs_down buttons.
-    
-    Thumbs Up: Indicates satisfaction with the recommendations. The system will prioritize similar products in the future.
-    
-    Thumbs Down: Indicates dissatisfaction. The system will adjust its recommendations by broadening the search or shuffling results.
+2. **Real-Time Dashboard Updates**:
+    - Sentiment: Positive
+    - Emotion: Curiosity
+    - Purchase Intent: Immediate
+    - Behavioral Intent: Product page exploration
 
-6. Stop the Recording:
+3. **Product Recommendations**:
+    - Suggestions prioritize in-stock smartphones within budget.
 
-    Click the Stop Recording button to end the session.
-    
-    The application will finalize the transcription and analysis.
+4. **Provide Feedback**:
+    - Thumbs Up for satisfaction.
+    - Thumbs Down for alternatives.
 
-7. Save the Results:
+5. **Save Results**:
+    - Full call transcription.
+    - Sentiment, emotion, and intent analysis.
+    - Performance analytics and follow-up suggestions.
 
-    After stopping the recording, you can save the transcription and analysis results to an Excel file for further review.
-    
-    The Excel file will include:
-    
-    Full call transcription.
-    
-    Sentiment, emotion, and intent analysis.
-    
-    Product recommendations (if applicable).
-    
-    Performance analytics and follow-up suggestions.
-   
-### Example Workflow
+---
 
-1. Start a Call:
+## **API Documentation**
 
-    Click the microphone button to begin.
-    
-    Say: "Hi, I'm looking for a new smartphone with a good camera. My budget is around ₹30,000."
+### **Endpoints**
 
-2. Real-Time Insights:
+## Endpoints
 
-    The dashboard updates in real-time:
-    
-    Sentiment: Positive
-    
-    Emotion: Curiosity
-    
-    Purchase Intent: Immediate purchase intent
-    
-    Behavioral Intent: Product page exploration
-    
-    Advanced Intent: High-value lead identification
+### 1. GET /
+**Description:** Serves the main HTML page for the application.
 
-3. Product Recommendations:
+**Method:** GET
 
-    The system suggests 3 smartphones within the budget, prioritizing in-stock items.
+**Response:**
+- **Content-Type:** text/html
+- **Response Body:** HTML content of the application's frontend.
 
-4. Provide Feedback:
+---
 
-    If you like the recommendations, click Thumbs Up.
-    
-    If you are unsatisfied, click Thumbs Down to get alternative suggestions.
+### 2. POST /get_response
+**Description:** Processes user input (text or speech) and returns real-time insights, including sentiment, emotion, engagement, purchase intent, and product recommendations.
 
-5. End the Call:
+**Method:** POST
 
-    Click Stop Recording.
-    
-    Save the transcription and analysis to an Excel file.
-   
-### Endpoints
+**Request Body:**
+```json
+{
+  "user_input": "I'm looking for a new smartphone with a good camera.",
+  "user_name": "John Doe",
+  "email": "john.doe@example.com"
+}
+```
+- **user_input:** The text or speech input from the user.
+- **user_name:** The name of the user (optional).
+- **email:** The email of the user (required for CRM tracking).
 
-    GET /: Serves the main HTML page.
-    
-    POST /get_response: Processes user input and returns sentiment, emotion, intent analysis, and product recommendations.
-    
-    POST /handle_feedback: Handles user feedback and updates recommendations accordingly.
-    
-    POST /post_call_insights: Generates post-call insights, including summaries, performance analytics, and follow-up suggestions.
-    
-    POST /negotiation_coach: Provides negotiation tactics and objection handling strategies.
+**Response:**
+```json
+{
+  "response": "I'm looking for a new smartphone with a good camera.",
+  "sentiment": "Positive",
+  "emotion": "Curiosity",
+  "engagement": "High",
+  "purchase_intent": "Immediate purchase intent",
+  "behavioral_intent": "Product page exploration",
+  "advanced_intent": "High-value lead identification",
+  "suggestions": [
+    {
+      "ProductName": "Smartphone X",
+      "ProductPrice": "₹28,999",
+      "Rating": "4.5",
+      "StockAvailability": "In Stock",
+      "Features": "48MP Camera, 128GB Storage",
+      "Description": "Great performance and features"
+    }
+  ],
+  "is_existing_user": true,
+  "user_name": "John Doe",
+  "last_product": "smartphones"
+}
+```
+- **response:** The user input echoed back.
+- **sentiment:** The sentiment analysis result.
+- **emotion:** The detected emotional state.
+- **engagement:** The level of buyer engagement.
+- **purchase_intent:** The classified purchase intent.
+- **behavioral_intent:** The behavioral intent signals.
+- **advanced_intent:** Advanced intent detection insights.
+- **suggestions:** A list of recommended products.
+- **is_existing_user:** Indicates if the user exists in the CRM.
+- **user_name:** The name of the user.
+- **last_product:** The last product searched by the user (if available).
+
+---
+
+### 3. POST /handle_feedback
+**Description:** Handles user feedback (thumbs_up or thumbs_down) on product recommendations and updates the CRM.
+
+**Method:** POST
+
+**Request Body:**
+```json
+{
+  "user_input": "I'm looking for a new smartphone with a good camera.",
+  "email": "john.doe@example.com",
+  "feedback": "thumbs_up",
+  "user_name": "John Doe"
+}
+```
+- **user_input:** The original user input.
+- **email:** The email of the user (required for CRM tracking).
+- **feedback:** The feedback provided (thumbs_up or thumbs_down).
+- **user_name:** The name of the user (optional).
+
+**Response:**
+```json
+{
+  "new_recommendations": [
+    {
+      "ProductName": "Smartphone Y",
+      "ProductPrice": "₹29,999",
+      "Rating": "4.7",
+      "StockAvailability": "In Stock",
+      "Features": "64MP Camera, 256GB Storage",
+      "Description": "Excellent camera and performance"
+    }
+  ]
+}
+```
+- **new_recommendations:** Updated product recommendations based on feedback.
+
+---
+
+### 4. POST /post_call_insights
+**Description:** Generates post-call insights, including a summary, performance analytics, deal status, and follow-up suggestions.
+
+**Method:** POST
+
+**Request Body:**
+```json
+{
+  "transcription": "Customer was interested in a new laptop but was concerned about the price.",
+  "user_name": "John Doe",
+  "email": "john.doe@example.com"
+}
+```
+- **transcription:** The transcription of the call.
+- **user_name:** The name of the user (optional).
+- **email:** The email of the user (required for CRM tracking).
+
+**Response:**
+```json
+{
+  "user_name": "John Doe",
+  "email": "john.doe@example.com",
+  "sentiment": "Neutral",
+  "emotion": "Hesitation",
+  "purchase_intent": "Exploratory purchase intent",
+  "behavioral_intent": "Website browsing intent",
+  "advanced_intent": "High-value lead identification",
+  "recommendations": [
+    {
+      "ProductName": "Laptop Z",
+      "ProductPrice": "₹45,999",
+      "Rating": "4.6",
+      "StockAvailability": "In Stock",
+      "Features": "16GB RAM, 512GB SSD",
+      "Description": "Great for productivity and gaming"
+    }
+  ],
+  "summary": "Customer is interested in a new laptop but is concerned about the price.",
+  "performance_analytics": "Moderate engagement, price sensitivity detected.",
+  "deal_status": "Open",
+  "follow_up_suggestions": "Offer a discount or financing options.",
+  "negotiation_tactics": "Highlight the long-term value of the product.",
+  "objection_handling": "Address price concerns by comparing with competitors."
+}
+```
+- **summary:** A concise summary of the call.
+- **performance_analytics:** Performance metrics and insights.
+- **deal_status:** Updated deal status (Open, Negotiation, Closed-Won, Closed-Lost).
+- **follow_up_suggestions:** Actionable follow-up suggestions.
+- **negotiation_tactics:** Negotiation strategies for the sales team.
+- **objection_handling:** Suggestions for handling objections.
+
+---
+
+### 5. POST /negotiation_coach
+**Description:** Provides negotiation tactics and objection handling strategies based on user input.
+
+**Method:** POST
+
+**Request Body:**
+```json
+{
+  "user_input": "The customer is hesitant due to the price."
+}
+```
+- **user_input:** The input describing the negotiation scenario.
+
+**Response:**
+```json
+{
+  "negotiation_tactics": "Highlight the long-term value and ROI of the product.",
+  "objection_handling": "Offer a discount or financing options to address price concerns."
+}
+```
+- **negotiation_tactics:** Suggested negotiation strategies.
+- **objection_handling:** Strategies for handling objections.
 
 
-## Feedback Mechanism
-   The feedback mechanism is a core feature of Sentimind AI, allowing users to improve the quality of recommendations over time. Here's how it works:
-    
-    1. Thumbs Up:
-    
-        Indicates that the user is satisfied with the recommendations.
-    
-        The system will:
-        
-        Prioritize similar products in future searches.
-    
-        Increase the weight of positive feedback in the CRM for personalized recommendations.
-    
-    2. Thumbs Down:
-    
-        Indicates that the user is dissatisfied with the recommendations.
-        
-        The system will:
-        
-        Broaden the search criteria or shuffle the results.
-        
-        Adjust the recommendation algorithm to avoid similar products in the future.
-        
-        Log the feedback in the CRM for future reference.
-    
-    3. Feedback Integration:
-    
-        All feedback is stored in the CRM under the user's profile.
-        
-        The system uses this feedback to refine its understanding of user preferences and improve future interactions.
 
-## License
+---
+
+## **Feedback Mechanism**
+
+Feedback is central to Sentimind AI's adaptive learning:
+
+1. **Thumbs Up**:
+    - Prioritizes similar products in the future.
+    - Updates CRM with positive feedback for improved personalization.
+
+2. **Thumbs Down**:
+    - Broadens search criteria or shuffles results.
+    - Avoids similar products in future recommendations.
+    - Logs feedback for refining user preferences.
+
+3. **Feedback Integration**:
+    - All feedback is stored in the CRM under user profiles.
+    - Helps refine recommendations and enhance user satisfaction.
+
+---
+
+## **License**
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
-## Contact
+---
 
-For questions or feedback, feel free to reach out:
+## **Contact**
 
-- **Email**: resultyst@gmail.com
+For questions or feedback, reach out:
+
+- **Email**: [resultyst@gmail.com](mailto:resultyst@gmail.com)
 - **GitHub**: [Resultyst](https://github.com/Resultyst)
 - **LinkedIn**: [Suryaa Narayanan K](https://www.linkedin.com/in/resultyst7/)
 
-## Acknowledgments
+---
+
+## **Acknowledgments**
 
 - **Groq** for providing the AI API.
-- **FAISS**: For efficient similarity search and clustering of dense vectors.
-- **Sentence Transformers**: For generating high-quality sentence embeddings.
-- **FastAPI**: For building the API with high performance and ease of use.
+- **FAISS** for efficient similarity search and clustering.
+- **Sentence Transformers** for high-quality sentence embeddings.
+- **FastAPI** for building a high-performance API.
+
+---
+
